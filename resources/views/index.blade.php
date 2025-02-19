@@ -124,11 +124,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="audiovisuales[]" value="Computador" data-target="computador-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Computador" data-target="computador-select">
                                         <label class="form-check-label">Computador</label>
 
                                        <div id="computador-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                     
+                                           <select class="form-control" name="cantidad Computador">                    <!--  este bloque refiere a el select de cantidad -->                     
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -139,11 +139,11 @@
 
 
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="audiovisuales[]" value="Cámara">
-                                        <label class="form-check-label">Cámara</label>
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Camara" data-target="Camara-select">
+                                        <label class="form-check-label">Camara</label>
 
-                                         <div id="camara-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                         <div id="Camara-select" class="d-none ms-2 d-inline-block"> 
+                                             <select class="form-control" name="cantidad Camara">                             <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -152,11 +152,11 @@
 
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="audiovisuales[]" value="Conexión Internet" data-target="Conexion Internet-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Conexión Internet" data-target="Conexion-Internet-select">
                                         <label class="form-check-label">Conexión a Internet</label>
 
-                                        <div id="Conexion Internet-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                        <div id="Conexion-Internet-select" class="d-none ms-2 d-inline-block"> 
+                                              <select class="form-control" name="cantidad Conexion Internet">                               <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -165,11 +165,11 @@
 
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="audiovisuales[]" value="Pantalla Proyección" data-target="Pantalla Proyeccion-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Pantalla Proyección" data-target="Pantalla-Proyeccion-select">
                                         <label class="form-check-label">Pantalla para Proyección</label>
 
-                                        <div id="Pantalla Proyeccion-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                        <div id="Pantalla-Proyeccion-select" class="d-none ms-2 d-inline-block"> 
+                                            <select class="form-control" name="cantidad Pantalla Proyeccion">                       <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -178,11 +178,11 @@
 
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="audiovisuales[]" value="Pantalla TV" data-target="Pantalla TV-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Pantalla TV" data-target="Pantalla-TV-select">
                                         <label class="form-check-label">Pantalla (TV)</label>
 
-                                        <div id="Pantalla TV-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                        <div id="Pantalla-TV-select" class="d-none ms-2 d-inline-block"> 
+                                             <select class="form-control" name="cantidad Pantalla TV">                                <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -191,11 +191,11 @@
 
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="audiovisuales[]" value="Video Bin" data-target="Video Bin-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Video Bin" data-target="Video-Bin-select">
                                         <label class="form-check-label">Video Bin</label>
 
-                                        <div id="Video Bin-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                        <div id="Video-Bin-select" class="d-none ms-2 d-inline-block"> 
+                                           <select class="form-control" name="cantidad Video Bin">                              <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -204,11 +204,11 @@
 
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="audiovisuales[]" value="Sonido"  data-target="Sonido-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Sonido"  data-target="Sonido-select">
                                         <label class="form-check-label">Sonido</label>
 
                                         <div id="Sonido-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                              <select class="form-control" name="cantidad Sonido">                            <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -217,11 +217,11 @@
 
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="audiovisuales[]" value="Micrófono" data-target="Microfono-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Micrófono" data-target="Microfono-select">
                                         <label class="form-check-label">Micrófono</label>
 
                                         <div id="Microfono-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                            <select class="form-control" name="cantidad Microfono">                              <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -244,11 +244,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="servicios_generales[]" value="Mesa" data-target="Mesa-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Mesa" data-target="Mesa-select">
                                         <label class="form-check-label">Mesa</label>
 
                                         <div id="Mesa-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                           <select class="form-control" name="cantidad_mesa">                     <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -257,11 +257,11 @@
 
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="servicios_generales[]" value="Mantel" data-target="Mantel-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Mantel" data-target="Mantel-select">
                                         <label class="form-check-label">Mantel</label>
 
                                         <div id="Mantel-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                             <select class="form-control" name="cantidad_Mantel">                                <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -284,11 +284,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="comunicaciones[]" value="Fotografía" data-target="Fotografia-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="comunicaciones[]" value="Fotografía" data-target="Fotografia-select">
                                         <label class="form-check-label">Fotografía</label>
 
                                         <div id="Fotografia-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                            <select class="form-control" name="cantidad_Fotografia">                                  <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -297,11 +297,11 @@
 
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="comunicaciones[]" value="Video" data-target="Video-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="comunicaciones[]" value="Video" data-target="Video-select">
                                         <label class="form-check-label">Video</label>
 
                                         <div id="Video-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                            <select class="form-control" name="cantidad_video">                               <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -324,11 +324,11 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="administracion[]" value="Refrigerio" data-target="Refrigerio-select">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="administracion[]" value="Refrigerio" data-target="Refrigerio-select">
                                         <label class="form-check-label">Refrigerio</label>
 
                                         <div id="Refrigerio-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-requerimientos select">                       <!--  este bloque refiere a el select de cantidad -->                                                         
+                                            <select class="form-control" name="cantidad_computador">                              <!--  este bloque refiere a el select de cantidad -->                                                         
                                                 @for ($i = 1; $i <= 15; $i++)
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
@@ -371,7 +371,34 @@
                     <script>
                  
                  
-            
+                 document.addEventListener('DOMContentLoaded', function () {
+    console.log("El DOM está completamente cargado.");
+
+    // Contenedor principal para delegar eventos
+    const contenedorRequerimientos = document.querySelector('#form-requerimientos');
+    console.log("Contenedor de requerimientos:", contenedorRequerimientos);
+
+    // Evento delegado para checkboxes
+    contenedorRequerimientos.addEventListener('change', function (event) {
+        console.log("Evento change detectado en:", event.target);
+
+        // Verificar si el elemento es un checkbox de requerimiento
+        if (event.target.classList.contains('requerimiento-checkbox')) {
+            const targetId = event.target.dataset.target; // ID del contenedor del select
+            const selectContainer = document.getElementById(targetId);
+            console.log("Select container:", selectContainer);
+
+            // Mostrar u ocultar el select según el estado del checkbox
+            if (event.target.checked) {
+                selectContainer.classList.remove('d-none');
+                console.log("Select mostrado:", targetId);
+            } else {
+                selectContainer.classList.add('d-none');
+                console.log("Select ocultado:", targetId);
+            }
+        }
+    });
+});
                  
                  
                  
