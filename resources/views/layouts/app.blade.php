@@ -22,21 +22,43 @@
 </head>
 <body>
 
-    <!-- Barra de navegación -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-            <a class="navbar-brand" href="{{ route('index') }}">Mi Aplicación</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="{{ route('login.show') }}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ route('register.show') }}">Registro</a></li>
-                </ul>
-            </div>
+@if(session('error'))
+    <div class="alert alert-danger text-center">
+        {{ session('error') }}
+    </div>
+@endif
+
+
+
+   <!-- Barra de navegación -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{{ route('index') }}">Mi Aplicación</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('login.show') }}">Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ route('register.show') }}">Registro</a>
+                </li>
+            </ul>
         </div>
-    </nav>
+    </div>
+
+    @if(Auth::check())
+        <li class="nav-item">
+            <a class="nav-link" href="#">
+                Bienvenido, {{ Auth::user()->name }} ({{ ucfirst(Auth::user()->rol) }})
+            </a>
+        </li>
+    @endif
+</nav>
+
 
     <!-- Contenido Principal -->
     <div class="container mt-4">

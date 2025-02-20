@@ -35,3 +35,21 @@ Route::get('/admin', function () {
 Route::get('/profesor', function () {
     // Vista de profesor
 })->middleware('role:profesor');
+
+
+
+
+
+// Ruta accesible solo por administradores
+Route::middleware(['auth', 'role:administrador'])->group(function () {
+    Route::get('/admin', function () {
+        return view('admin.dashboard');
+    })->name('admin.dashboard');
+});
+
+// Ruta accesible solo por profesores
+Route::middleware(['auth', 'role:profesor'])->group(function () {
+    Route::get('/profesor', function () {
+        return view('profesor.dashboard');
+    })->name('profesor.dashboard');
+});
