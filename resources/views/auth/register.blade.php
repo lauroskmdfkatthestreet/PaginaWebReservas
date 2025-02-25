@@ -65,15 +65,31 @@
                                 @enderror
                             </div>
 
-     
+              
+                     <!-- Solo mostrar el campo de rol si el usuario autenticado es administrador -->
+                      @if(Auth::check() && Auth::user()->rol === 'administrador')
+                        <div class="mb-3">
+                            <label for="rol" class="form-label">Rol del Usuario</label>
+                            <select class="form-select" id="rol" name="rol">
+                                <option value="profesor" selected>Profesor</option>
+                                <option value="administrador">Administrador</option>
+                            </select>
+                        </div>
+                          @endif
 
 
 
+                         </form>
 
 
+
+                               @if(session('error'))
+                                  <div class="alert alert-danger">
+                                    {{ session('error') }}
+                                  </div>
+                               @endif
 
                          
-                        </form>
                     </div>
                 </div>
             </div>

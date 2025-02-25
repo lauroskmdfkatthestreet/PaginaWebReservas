@@ -15,12 +15,15 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, $role) 
     {
-        if (!Auth::check() || Auth::user()->rol !== $role) {
-
-            return redirect('/')->with('error', 'No tienes permisos para acceder a esta página.');
+        if (Auth::user()->rol !== 'administrador') {
+            return redirect('/')->with('error', 'No tienes permisos para esta acción.');
         }
 
         return $next($request);
     }
+
+
+
+
 }
 

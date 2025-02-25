@@ -21,18 +21,25 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        // Obtiene las credenciales; puedes usar getCredentials() si ya lo tienes definido en tu LoginRequest,
-        // o directamente obtener 'email' y 'password' con:
-        // $credentials = $request->only('email', 'password');
-        $credentials = $request->getCredentials();
 
+
+        $credentials = $request->only('email', 'password');
         
+        
+        $user = \App\Models\User::where('email', trim($request->email))->first();
+        if (!$user) {
+            return back()->withErrors(['email' => 'No se encontró un usuario con este email.'])->withInput();
+        }
+
+
         // Intenta autenticar al usuario con Auth::attempt().
         // Este método devolverá true si las credenciales son válidas.
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt(['email' => strtolower(trim($request->email)), 'password' => $request->password])) {
+
+        
             // Regenera la sesión para prevenir ataques de fijación de sesión.
             $request->session()->regenerate();
-
+    
             // Redirige al usuario a la URL deseada, por ejemplo '/home'.
             return redirect()->route('index');
         }
