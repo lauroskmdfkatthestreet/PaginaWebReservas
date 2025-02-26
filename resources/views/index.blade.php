@@ -208,10 +208,7 @@
                                         <label class="form-check-label">Sonido</label>
 
                                         <div id="Sonido-select" class="d-none ms-2 d-inline-block"> 
-                                              <select class="form-control" name="cantidad Sonido">                            <!--  este bloque refiere a el select de cantidad -->                                                         
-                                                @for ($i = 1; $i <= 15; $i++)
-                                                    <option value="{{ $i }}">{{ $i }}</option>  
-                                                @endfor
+                                              
                                             </select>
                                        </div>  
 
@@ -239,45 +236,61 @@
                                 </div>
                             </div>
 
-                            <!-- Servicios Generales -->
-                            <h6 class="mt-4">Servicios Generales</h6>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-check">
-                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Mesa" data-target="Mesa-select">
-                                        <label class="form-check-label">Mesa</label>
-
-                                        <div id="Mesa-select" class="d-none ms-2 d-inline-block"> 
-                                           <select class="form-control" name="cantidad_mesa">                     <!--  este bloque refiere a el select de cantidad -->                                                         
-                                                @for ($i = 1; $i <= 15; $i++)
-                                                    <option value="{{ $i }}">{{ $i }}</option>  
-                                                @endfor
-                                            </select>
-                                       </div>  
-
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Mantel" data-target="Mantel-select">
-                                        <label class="form-check-label">Mantel</label>
-
-                                        <div id="Mantel-select" class="d-none ms-2 d-inline-block"> 
-                                             <select class="form-control" name="cantidad_Mantel">                                <!--  este bloque refiere a el select de cantidad -->                                                         
-                                                @for ($i = 1; $i <= 15; $i++)
-                                                    <option value="{{ $i }}">{{ $i }}</option>  
-                                                @endfor
-                                            </select>
-                                       </div>  
-
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input otro-checkbox" type="checkbox" data-target="servicios_generales_otro">
-                                        <label class="form-check-label">Otro</label>
-                                    </div>
+                                            <!-- Servicios Generales -->
+                        <h6 class="mt-4">Servicios Generales</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Mesa" data-target="Mesa-select">
+                                    <label class="form-check-label ms-2">Mesa</label>
+                                    <select class="form-control ms-2 w-auto d-none" id="Mesa-select" name="cantidad_mesa">
+                                        @for ($i = 1; $i <= 15; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>  
+                                        @endfor
+                                    </select>
                                 </div>
-                                <div class="col-md-6">
-                                    <input type="text" class="form-control mt-2 d-none" id="servicios_generales_otro" name="servicios_generales_otro" placeholder="Especifique que recurso requiere">
+
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Mantel" data-target="Mantel-select">
+                                    <label class="form-check-label ms-2">Mantel</label>
+                                    <select class="form-control ms-2 w-auto d-none" id="Mantel-select" name="cantidad_Mantel">
+                                        @for ($i = 1; $i <= 15; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>  
+                                        @endfor
+                                    </select>
+                                </div>
+
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Extension_electrica" data-target="extension-select">
+                                    <label class="form-check-label ms-2">Extensión eléctrica</label>
+                                    <select class="form-control ms-2 w-auto d-none" id="extension-select" name="cantidad_Extension">
+                                        @for ($i = 1; $i <= 15; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>  
+                                        @endfor
+                                    </select>
+                                </div>
+
+                                <div class="form-check d-flex align-items-center">
+                                    <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Multitoma" data-target="Multitoma-select">
+                                    <label class="form-check-label ms-2">Multitoma</label>
+                                    <select class="form-control ms-2 w-auto d-none" id="Multitoma-select" name="cantidad_Multitoma">
+                                        @for ($i = 1; $i <= 15; $i++)
+                                            <option value="{{ $i }}">{{ $i }}</option>  
+                                        @endfor
+                                    </select>
+                                </div>
+
+                                <div class="form-check">
+                                    <input class="form-check-input otro-checkbox" type="checkbox" data-target="servicios_generales_otro">
+                                    <label class="form-check-label">Otro</label>
                                 </div>
                             </div>
+
+                            <div class="col-md-6">
+                                <input type="text" class="form-control mt-2 d-none" id="servicios_generales_otro" name="servicios_generales_otro" placeholder="Especifique qué recurso requiere">
+                            </div>
+                        </div>
+
 
                             <!-- Comunicaciones -->
                             <h6 class="mt-4">Comunicaciones</h6>
@@ -319,32 +332,51 @@
                                 </div>
                             </div>
 
-                            <!-- Administración -->
+                                                    <!-- Administración -->
                             <h6 class="mt-4">Administración</h6>
                             <div class="row">
                                 <div class="col-md-6">
-                                    <div class="form-check">
+                                    <div class="form-check d-flex align-items-center">
                                         <input class="form-check-input requerimiento-checkbox" type="checkbox" name="administracion[]" value="Refrigerio" data-target="Refrigerio-select">
-                                        <label class="form-check-label">Refrigerio</label>
-
-                                        <div id="Refrigerio-select" class="d-none ms-2 d-inline-block"> 
-                                            <select class="form-control" name="cantidad_computador">                              <!--  este bloque refiere a el select de cantidad -->                                                         
-                                                @for ($i = 1; $i <= 15; $i++)
-                                                    <option value="{{ $i }}">{{ $i }}</option>  
-                                                @endfor
-                                            </select>
-                                       </div>   
-
+                                        <label class="form-check-label ms-2">Refrigerio</label>
+                                        <select class="form-control ms-2 w-auto d-none" id="Refrigerio-select" name="cantidad_Refrigerio">
+                                            @for ($i = 1; $i <= 15; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>  
+                                            @endfor
+                                        </select>
                                     </div>
+
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="administracion[]" value="Agua" data-target="Agua-select">
+                                        <label class="form-check-label ms-2">Agua</label>
+                                        <select class="form-control ms-2 w-auto d-none" id="Agua-select" name="cantidad_Agua">
+                                            @for ($i = 1; $i <= 15; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>  
+                                            @endfor
+                                        </select>
+                                    </div>
+
+                                    <div class="form-check d-flex align-items-center">
+                                        <input class="form-check-input requerimiento-checkbox" type="checkbox" name="administracion[]" value="Vasos" data-target="Vasos-select">
+                                        <label class="form-check-label ms-2">Vasos</label>
+                                        <select class="form-control ms-2 w-auto d-none" id="Vasos-select" name="cantidad_Vasos">
+                                            @for ($i = 1; $i <= 15; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>  
+                                            @endfor
+                                        </select>
+                                    </div>
+
                                     <div class="form-check">
                                         <input class="form-check-input otro-checkbox" type="checkbox" data-target="administracion_otro">
                                         <label class="form-check-label">Otro</label>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
-                                    <input type="text" class="form-control mt-2 d-none" id="administracion_otro" name="administracion_otro" placeholder="Especifique que recurso requiere">
+                                    <input type="text" class="form-control mt-2 d-none" id="administracion_otro" name="administracion_otro" placeholder="Especifique qué recurso requiere">
                                 </div>
                             </div>
+
 
                             <!-- Botones de navegación -->
                             <div class="text-end mt-4">

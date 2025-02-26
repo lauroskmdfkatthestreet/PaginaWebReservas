@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-
-
     <!-- jQuery (Necesario para los botones de siguiente/anterior) -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
@@ -17,48 +15,63 @@
     <!-- FullCalendar -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.css">
     
-    <!-- Estilos de Laravel (CSS compilado si usas Laravel Mix o Vite) -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <!-- Estilos de Laravel -->
+    <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
 
-@if(session('error'))
-    <div class="alert alert-danger text-center">
-        {{ session('error') }}
-    </div>
-@endif
-
-
-
-   <!-- Barra de navegación -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <a class="navbar-brand" href="{{ route('index') }}">Mi Aplicación</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('login.show') }}">Login</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ route('register.show') }}">Registro</a>
-                </li>
-            </ul>
+    <!-- Mensajes de sesión -->
+    @if(session('success'))
+        <div class="alert alert-success alert-dismissible fade show mt-3 text-center" role="alert">
+            {{ session('success') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-    </div>
-
-    @if(Auth::check())
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-                Bienvenido, {{ Auth::user()->name }} ({{ ucfirst(Auth::user()->rol) }})
-            </a>
-        </li>
     @endif
-</nav>
 
+    @if(session('error'))
+        <div class="alert alert-danger alert-dismissible fade show mt-3 text-center" role="alert">
+            {{ session('error') }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    @endif
+
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="{{ route('index') }}">Mi Aplicación</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    @auth
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                Bienvenido, {{ Auth::user()->name }} ({{ ucfirst(Auth::user()->rol) }})
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" 
+                               onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                Cerrar sesión
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </li>
+                    @else
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('login.show') }}">Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register.show') }}">Registro</a>
+                        </li>
+                    @endauth
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <!-- Contenido Principal -->
     <div class="container mt-4">
@@ -70,10 +83,10 @@
 
     <!-- FullCalendar -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/main.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/locales/es.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.11.3/locales-all.min.js"></script>
 
     <!-- Scripts de Laravel -->
-    <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{ mix('js/app.js') }}"></script>
 
     @stack('scripts') {{-- Para agregar scripts adicionales en vistas específicas --}}
 </body>

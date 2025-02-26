@@ -7,26 +7,24 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Espacio;
 
-
 class ReservaController extends Controller
 {
     /**
      * Restringe el acceso a usuarios autenticados.
      */
-
-     public function create()
-     {
-         $espacios = Espacio::all(); // Cargar todos los espacios disponibles
-         return view('reservas.create', compact('espacios'));
-     }
-
-
-
     public function __construct()
     {
         $this->middleware('auth');
     }
-    
+
+    /**
+     * Muestra el formulario de creación de reservas.
+     */
+    public function create()
+    {
+        $espacios = Espacio::all(); // Cargar todos los espacios disponibles
+        return view('reservas.create', compact('espacios'));
+    }
 
     /**
      * Muestra la lista de reservas del usuario autenticado en el calendario.
@@ -43,25 +41,46 @@ class ReservaController extends Controller
     {
         $reservas = Reserva::where('user_id', Auth::id())->get();
 
-        // Convertir las reservas a un formato compatible con FullCalendar
-        $events = $reservas->map(function ($reserva) {
-            return [
+        $events = [];
+
+        foreach ($reservas as $reserva) {
+            $events[] = [
                 'id' => $reserva->id,
                 'title' => $reserva->nombre_actividad,
                 'start' => "{$reserva->fecha}T{$reserva->hora_inicio}",
                 'end' => "{$reserva->fecha}T{$reserva->hora_fin}",
             ];
-        });
+        }
 
         return response()->json($events);
     }
 
     /**
-     * Muestra el formulario para crear una nueva reserva.
+     * Muestra la vista del calendario.
      */
- 
+    public function calendario()
+    {
+        return view('reservas.calendario');
+    }
 
+    /**
+     * Devuelve todos los eventos en formato JSON.
+     */
+    public function obtenerEventos()
+    {
+        $reservas = Reserva::all();
+        $eventos = [];
 
+        foreach ($reservas as $reserva) {
+            $eventos[] = [
+                'title' => $reserva->nombre_actividad,
+                'start' => "{$reserva->fecha}T{$reserva->hora_inicio}",
+                'end' => "{$reserva->fecha}T{$reserva->hora_fin}",
+            ];
+        }
+
+        return response()->json($eventos);
+    }
 
     /**
      * Guarda una nueva reserva en la base de datos.
@@ -91,7 +110,7 @@ class ReservaController extends Controller
             'programa_evento' => $request->programa_evento,
         ]);
 
-        return redirect()->route('reservas.index')->with('success', 'Reserva creada con éxito.');
+        return redirect()->route('reservas.calendario')->with('success', 'Reserva creada con éxito');
     }
 
     /**
@@ -163,30 +182,29 @@ class ReservaController extends Controller
             'Biblioteca - Sala de lectura',
             'Coliseo - Espacios deportivos',
             'Laboratorio de física',
-            'laboratorio de quimica',
+            'Laboratorio de química',
             'Emisora Colamer',
             'Otro'
         ];
     }
 
-
+    /**
+     * Devuelve los eventos en formato JSON.
+     */
     public function getEvents()
-{
-    $reservas = Reserva::all(); // Obtener todas las reservas
+    {
+        $reservas = Reserva::all();
+        $events = [];
 
-    $events = $reservas->map(function ($reserva) {
-        return [
-            'id'    => $reserva->id,
-            'title' => $reserva->nombre_actividad,
-            'start' => $reserva->fecha . 'T' . $reserva->hora_inicio,
-            'end'   => $reserva->fecha . 'T' . $reserva->hora_fin,
-        ];
-    });
+        foreach ($reservas as $reserva) {
+            $events[] = [
+                'id' => $reserva->id,
+                'title' => $reserva->nombre_actividad,
+                'start' => "{$reserva->fecha}T{$reserva->hora_inicio}",
+                'end' => "{$reserva->fecha}T{$reserva->hora_fin}",
+            ];
+        }
 
-    return response()->json($events);
-}
-
-
-
-
+        return response()->json($events);
+    }
 }

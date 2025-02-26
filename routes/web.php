@@ -5,49 +5,41 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
-// Opción 1: Definir la ruta con el controlador (Recomendada)
+Auth::routes();
+
+
+// Página principal
 Route::get('/', [IndexController::class, 'index'])->name('index');
-Route::get('/reservas/events', [ReservaController::class, 'getEvents'])->name('reservas.events');
 
-Route::get('/reservas', [ReservaController::class, 'index'])->name('reservas.index');
-Route::get('/reservas/create', [ReservaController::class, 'create'])->name('reservas.create'); // ✅ ESTA ES LA RUTA QUE FALTABA
-Route::post('/reservas', [ReservaController::class, 'store'])->name('reservas.store');
-Route::get('/reservas/events', [ReservaController::class, 'events'])->name('reservas.events');
-
-
-
-
-
+// Rutas de reservas
+Route::prefix('reservas')->group(function () {
+    Route::get('/', [ReservaController::class, 'index'])->name('reservas.index');
+    Route::get('/create', [ReservaController::class, 'create'])->name('reservas.create'); // ✅ Ruta añadida
+    Route::post('/', [ReservaController::class, 'store'])->name('reservas.store');
+    Route::get('/calendario', [ReservaController::class, 'calendario'])->name('reservas.calendario');
+    Route::get('/eventos', [ReservaController::class, 'obtenerEventos'])->name('reservas.eventos');
+    Route::get('/events', [ReservaController::class, 'getEvents'])->name('reservas.events');
+});
 
 // Rutas de autenticación
 Route::get('/register', [RegisterController::class, 'show'])->name('register.show');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
+
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');//cerrar sesion
+
 Route::get('/login', [LoginController::class, 'show'])->name('login.show');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
-
-Route::get('/admin', function () {
-    // Vista de admin
-})->middleware('role:admin');
-
-Route::get('/profesor', function () {
-    // Vista de profesor
-})->middleware('role:profesor');
-
-
-
-
-
-// Ruta accesible solo por administradores
+// Rutas protegidas por roles
 Route::middleware(['auth', 'role:administrador'])->group(function () {
     Route::get('/admin', function () {
         return view('admin.dashboard');
     })->name('admin.dashboard');
 });
 
-// Ruta accesible solo por profesores
 Route::middleware(['auth', 'role:profesor'])->group(function () {
     Route::get('/profesor', function () {
         return view('profesor.dashboard');

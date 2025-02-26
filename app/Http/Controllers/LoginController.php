@@ -21,8 +21,6 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-
-
         $credentials = $request->only('email', 'password');
         
         
@@ -41,7 +39,7 @@ class LoginController extends Controller
             $request->session()->regenerate();
     
             // Redirige al usuario a la URL deseada, por ejemplo '/home'.
-            return redirect()->route('index');
+            return redirect()->route('index') -> with('success', '¡Bienvenido, ' . Auth::user()->name . '!');
         }
 
         // Si la autenticación falla, regresa al formulario de login con un error.
