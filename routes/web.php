@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\IndexController;
-use App\Http\Controllers\LoginController;
-use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Auth;
 
 Auth::routes();
+
+
 
 
 // Página principal
@@ -45,3 +47,7 @@ Route::middleware(['auth', 'role:profesor'])->group(function () {
         return view('profesor.dashboard');
     })->name('profesor.dashboard');
 });
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\IndexController::class, 'index'])->name('home');

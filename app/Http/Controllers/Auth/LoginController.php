@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
@@ -11,7 +12,7 @@ class LoginController extends Controller
     /**
      * Muestra la vista del login.
      */
-    public function show()
+    public function showLoginForm()
     {
         return view('auth.login');
     }
@@ -19,7 +20,7 @@ class LoginController extends Controller
     /**
      * Procesa el login del usuario.
      */
-    public function login(LoginRequest $request)
+          public function login(LoginRequest $request)
     {
         $credentials = $request->only('email', 'password');
         

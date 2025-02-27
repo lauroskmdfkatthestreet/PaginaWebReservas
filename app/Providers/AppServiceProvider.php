@@ -14,6 +14,10 @@ class AppServiceProvider extends ServiceProvider
         //
     }
 
+    protected $namespace = 'App\\Http\\Controllers';
+
+
+
     /**
      * Bootstrap any application services.
      */

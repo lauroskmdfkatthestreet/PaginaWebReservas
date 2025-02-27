@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -11,7 +12,7 @@ use Illuminate\Support\Str;
 
 class RegisterController extends Controller
 {
-    public function show()
+    public function showRegistrationForm    ()
     {
         return view('auth.register');
     }

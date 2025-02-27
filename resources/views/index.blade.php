@@ -408,6 +408,7 @@
     const contenedorRequerimientos = document.querySelector('#form-requerimientos');
     console.log("Contenedor de requerimientos:", contenedorRequerimientos);
 
+
     // Evento delegado para checkboxes
     contenedorRequerimientos.addEventListener('change', function (event) {
         console.log("Evento change detectado en:", event.target);
@@ -426,6 +427,18 @@
                 selectContainer.classList.add('d-none');
                 console.log("Select ocultado:", targetId);
             }
+
+                    document.querySelector("form").addEventListener("submit", function (event) {
+            let espacioSelect = document.getElementById("espacio");
+
+            if (!espacioSelect.value) {
+                alert("Por favor, seleccione un espacio antes de continuar.");
+                event.preventDefault(); // Evita que se envíe el formulario
+            }
+        });
+
+
+
         }
     });
 });

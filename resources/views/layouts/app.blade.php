@@ -62,10 +62,13 @@
                         </li>
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login.show') }}">Login</a>
+                        <a class="nav-link" href="{{ route('login') }}">Login</a>
+
+
+
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register.show') }}">Registro</a>
+                        <a class="nav-link" href="{{ route('register') }}">Registro</a>
                         </li>
                     @endauth
                 </ul>
