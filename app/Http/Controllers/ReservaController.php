@@ -27,14 +27,6 @@ class ReservaController extends Controller
     }
 
     /**
-     * Muestra la lista de reservas del usuario autenticado en el calendario.
-     */
-    public function index()
-    {
-        return view('reservas.index');
-    }
-
-    /**
      * Devuelve las reservas en formato JSON para FullCalendar.
      */
     public function getReservations()
@@ -85,6 +77,8 @@ class ReservaController extends Controller
     /**
      * Guarda una nueva reserva en la base de datos.
      */
+    
+
     public function store(Request $request)
     {
         $request->validate([
@@ -97,22 +91,25 @@ class ReservaController extends Controller
             'num_personas' => 'nullable|integer|min:1',
             'programa_evento' => 'nullable|string',
         ]);
-
-        Reserva::create([
-            'usuario_id' => Auth::id(),
-            'espacio' => $request->espacio !== 'Otro' ? $request->espacio : null,
-            'otro_espacio' => $request->espacio === 'Otro' ? $request->otro_espacio : null,
-            'fecha' => $request->fecha,
-            'hora_inicio' => $request->hora_inicio,
-            'hora_fin' => $request->hora_fin,
-            'nombre_actividad' => $request->nombre_actividad,
-            'num_personas' => $request->num_personas,
-            'programa_evento' => $request->programa_evento,
-        ]);
-
-        return redirect()->route('reservas.calendario')->with('success', 'Reserva creada con éxito');
+    
+        $reserva = new Reserva();
+        $reserva->usuario_id = Auth::check() ? Auth::id() : null;
+        $reserva->espacio = $request->espacio !== 'Otro' ? $request->espacio : null;
+        $reserva->otro_espacio = $request->espacio === 'Otro' ? $request->otro_espacio : null;
+        $reserva->fecha = $request->fecha;
+        $reserva->hora_inicio = $request->hora_inicio;
+        $reserva->hora_fin = $request->hora_fin;
+        $reserva->nombre_actividad = $request->nombre_actividad;
+        $reserva->num_personas = $request->num_personas;
+        $reserva->programa_evento = $request->programa_evento;
+    
+        if ($reserva->save()) {
+            return response()->json(['success' => true, 'message' => 'Reserva creada con éxito']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Error al crear la reserva']);
+        }
     }
-
+    
     /**
      * Muestra el formulario de edición de una reserva.
      */
@@ -207,4 +204,26 @@ class ReservaController extends Controller
 
         return response()->json($events);
     }
+
+
+    public function index()
+{
+    $reservas = Reserva::all();
+
+    $events = [];
+
+    foreach ($reservas as $reserva) {
+        $events[] = [
+            'title' => $reserva->nombre_actividad, // Ajusta el campo según tu BD
+            'start' => $reserva->fecha . 'T' . $reserva->hora_inicio,
+            'end'   => $reserva->fecha . 'T' . $reserva->hora_fin,
+        ];
+    }
+
+    return response()->json($events);
+}
+
+
+
+
 }
