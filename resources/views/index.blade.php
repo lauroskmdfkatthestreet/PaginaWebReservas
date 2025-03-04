@@ -9,6 +9,12 @@
         Crear Nueva Reserva
     </button>
 
+    <div class="text-center my-4">
+    <a href="{{ route('reservas.calendario') }}" class="btn btn-primary">
+        Ver Calendario de Reservas
+    </a>
+</div>
+
     <!-- Calendario -->
     <div id="calendar"></div>
 </div>
@@ -30,9 +36,9 @@
                             <h5>Nueva Reserva</h5>
 
                            <div class="mb-3">
-                            <label for="espacio" class="form-label">Espacio a Reservar</label>
+                            <label for="espacio_id" class="form-label">Espacio a Reservar</label>
                             <div class="d-flex align-items-center">
-                                <select class="form-select w-50 me-2" id="espacio" name="espacio" required>
+                                <select class="form-select w-50 me-2" id="espacio_id" name="espacio_id" required>
                                     <option value="" selected disabled>Selecciona un espacio</option>
                                     <option value="Auditorio Tecnológico 1">Auditorio Tecnológico 1</option>
                                     <option value="Auditorio Tecnológico 2">Auditorio Tecnológico 2</option>

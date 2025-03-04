@@ -22,8 +22,14 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => 'required',
-            'password' => 'required'
+            'espacio_id' => 'nullable|integer',
+            'otro_espacio' => 'nullable|string|required_if:espacio_id,Otro',
+            'fecha' => 'required|date',
+            'hora_inicio' => 'required|date_format:H:i',
+            'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
+            'nombre_actividad' => 'required|string|max:255',
+            'num_personas' => 'nullable|integer|min:1',
+            'programa_evento' => 'nullable|string',
         ];
     }
 

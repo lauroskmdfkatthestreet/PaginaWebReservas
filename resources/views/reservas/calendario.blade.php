@@ -68,6 +68,26 @@
 
         calendar.render();
     });
+
+    
+    
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'es',
+            selectable: true, // Permite seleccionar días
+            dateClick: function(info) {
+                // Configura la fecha seleccionada en el formulario
+                document.getElementById('fecha').value = info.dateStr;
+                // Abre el modal de Bootstrap
+                var myModal = new bootstrap.Modal(document.getElementById('reservaModal'));
+                myModal.show();
+            }
+        });
+        calendar.render();
+
+
+
 </script>
 
 

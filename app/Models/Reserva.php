@@ -14,15 +14,16 @@ class Reserva extends Model
     //define los campos que se pueden asignar de forma masiva
 
     protected $fillable = [
-
         'usuario_id',
         'espacio_id',
-        'fecha', 
+        'espacio',
+        'otro_espacio',
+        'fecha',
         'hora_inicio',
         'hora_fin',
         'nombre_actividad',
-        'num_personas'
-
+        'num_personas',
+        'programa_evento',
     ];
 
     public function user()

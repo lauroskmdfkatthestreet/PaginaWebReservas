@@ -7,7 +7,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use Illuminate\Support\Facades\Auth;
 
-Auth::routes();
+
 
 
 
@@ -22,8 +22,8 @@ Route::prefix('reservas')->group(function () {
     Route::get('/reservas', [ReservaController::class, 'index'])->name('reservas.index');
     Route::post('/reservas', [ReservaController::class, 'store'])->name('reservas.store');
 
-    Route::get('/', [ReservaController::class, 'index'])->name('reservas.index');
-    Route::get('/create', [ReservaController::class, 'create'])->name('reservas.create'); // ✅ Ruta añadida
+    
+    
     Route::get('/calendario', [ReservaController::class, 'calendario'])->name('reservas.calendario');
     Route::get('/eventos', [ReservaController::class, 'obtenerEventos'])->name('reservas.eventos');
     Route::get('/events', [ReservaController::class, 'getEvents'])->name('reservas.events');

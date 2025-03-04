@@ -82,7 +82,7 @@ class ReservaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'espacio' => 'required_without:otro_espacio|string',
+            'espacio_id' => 'required_without:otro_espacio|string',
             'otro_espacio' => 'nullable|required_if:espacio,Otro|string',
             'fecha' => 'required|date',
             'hora_inicio' => 'required|date_format:H:i',
@@ -102,11 +102,13 @@ class ReservaController extends Controller
         $reserva->nombre_actividad = $request->nombre_actividad;
         $reserva->num_personas = $request->num_personas;
         $reserva->programa_evento = $request->programa_evento;
-    
+
+
         if ($reserva->save()) {
-            return response()->json(['success' => true, 'message' => 'Reserva creada con éxito']);
+            // Redirigir a la página del calendario
+            return redirect()->route('reservas.calendario')->with('success', 'Reserva creada correctamente.');
         } else {
-            return response()->json(['success' => false, 'message' => 'Error al crear la reserva']);
+            return back()->withErrors(['error' => 'Error al crear la reserva.'])->withInput();
         }
     }
     
