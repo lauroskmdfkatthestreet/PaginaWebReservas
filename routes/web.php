@@ -16,18 +16,15 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', [IndexController::class, 'index'])->name('index');
 
 // Rutas de reservas
-Route::prefix('reservas')->group(function () {
-
-
-    Route::get('/reservas', [ReservaController::class, 'index'])->name('reservas.index');
-    Route::post('/reservas', [ReservaController::class, 'store'])->name('reservas.store');
-
-    
-    
+Route::middleware(['auth'])->prefix('reservas')->group(function () {
+    Route::get('/', [ReservaController::class, 'index'])->name('reservas.index');
+    Route::post('/', [ReservaController::class, 'store'])->name('reservas.store');
     Route::get('/calendario', [ReservaController::class, 'calendario'])->name('reservas.calendario');
-    Route::get('/eventos', [ReservaController::class, 'obtenerEventos'])->name('reservas.eventos');
     Route::get('/events', [ReservaController::class, 'getEvents'])->name('reservas.events');
+    
+    
 });
+
 
 // Rutas de autenticación
 Route::get('/register', [RegisterController::class, 'show'])->name('register.show');
@@ -36,7 +33,7 @@ Route::post('/register', [RegisterController::class, 'register'])->name('registe
 
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');//cerrar sesion
 
-Route::get('/login', [LoginController::class, 'show'])->name('login.show');
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
 // Rutas protegidas por roles

@@ -28,7 +28,7 @@ class Reserva extends Model
 
     public function user()
     {
-        return $this -> belongsTo(User::class);
+        return $this -> belongsTo(User::class,'usuario_id');
 
     }
 

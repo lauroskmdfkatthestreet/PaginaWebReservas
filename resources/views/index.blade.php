@@ -116,14 +116,13 @@
                             <div class="mb-3">
                                 <label for="num_personas" class="form-label">Número de Personas Esperadas:</label>
 
-                            <select class="form-control" name="num_personas" required>
-                                @for ($i = 1; $i <= 500; $i++)
+                              <select class="form-control" name="num_personas" required>
+                                 @for ($i = 1; $i <= 500; $i++)
                                     <option value="{{ $i }}">{{ $i }}</option>
-                                @endfor
-                            </select>
-
-
+                                  @endfor
+                                 </select>
                             </div>
+
 
                             <!-- Audiovisuales -->
                             <h6 class="mt-3">Audiovisuales</h6>
@@ -157,6 +156,7 @@
                                        </div>  
 
                                     </div>
+                                    
                                     <div class="form-check">
                                         <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Conexión Internet" data-target="Conexion-Internet-select">
                                         <label class="form-check-label">Conexión a Internet</label>
@@ -168,8 +168,9 @@
                                                 @endfor
                                             </select>
                                        </div>  
-
                                     </div>
+
+
                                     <div class="form-check">
                                         <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Pantalla Proyección" data-target="Pantalla-Proyeccion-select">
                                         <label class="form-check-label">Pantalla para Proyección</label>
@@ -181,8 +182,8 @@
                                                 @endfor
                                             </select>
                                        </div>   
-
                                     </div>
+
                                     <div class="form-check">
                                         <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Pantalla TV" data-target="Pantalla-TV-select">
                                         <label class="form-check-label">Pantalla (TV)</label>
@@ -193,9 +194,9 @@
                                                     <option value="{{ $i }}">{{ $i }}</option>  
                                                 @endfor
                                             </select>
-                                       </div>  
-
+                                       </div>                                  
                                     </div>
+
                                     <div class="form-check">
                                         <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Video Bin" data-target="Video-Bin-select">
                                         <label class="form-check-label">Video Bin</label>
@@ -207,8 +208,8 @@
                                                 @endfor
                                             </select>
                                        </div>  
-
                                     </div>
+
                                     <div class="form-check">
                                         <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Sonido"  data-target="Sonido-select">
                                         <label class="form-check-label">Sonido</label>
@@ -217,8 +218,8 @@
                                               
                                             </select>
                                        </div>  
-
                                     </div>
+
                                     <div class="form-check">
                                         <input class="form-check-input requerimiento-checkbox" type="checkbox" name="audiovisuales[]" value="Micrófono" data-target="Microfono-select">
                                         <label class="form-check-label">Micrófono</label>
@@ -230,8 +231,8 @@
                                                 @endfor
                                             </select>
                                        </div>  
-
                                     </div>
+
                                     <div class="form-check">
                                         <input class="form-check-input otro-checkbox" type="checkbox" data-target="audiovisuales_otro">
                                         <label class="form-check-label">Otro</label>
@@ -268,7 +269,7 @@
 
                                 <div class="form-check d-flex align-items-center">
                                     <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Extension_electrica" data-target="extension-select">
-                                    <label class="form-check-label ms-2">Extensión eléctrica</label>
+                                    <label class="form-check-label ms-2">Extensión Eléctrica</label>
                                     <select class="form-control ms-2 w-auto d-none" id="extension-select" name="cantidad_Extension">
                                         @for ($i = 1; $i <= 15; $i++)
                                             <option value="{{ $i }}">{{ $i }}</option>  
@@ -278,7 +279,7 @@
 
                                 <div class="form-check d-flex align-items-center">
                                     <input class="form-check-input requerimiento-checkbox" type="checkbox" name="servicios_generales[]" value="Multitoma" data-target="Multitoma-select">
-                                    <label class="form-check-label ms-2">Multitoma</label>
+                                    <label class="form-check-label ms-2">Multitoma Eléctrica</label>
                                     <select class="form-control ms-2 w-auto d-none" id="Multitoma-select" name="cantidad_Multitoma">
                                         @for ($i = 1; $i <= 15; $i++)
                                             <option value="{{ $i }}">{{ $i }}</option>  
@@ -313,8 +314,9 @@
                                                 @endfor
                                             </select>
                                        </div>  
-
                                     </div>
+
+
                                     <div class="form-check">
                                         <input class="form-check-input requerimiento-checkbox" type="checkbox" name="comunicaciones[]" value="Video" data-target="Video-select">
                                         <label class="form-check-label">Video</label>
@@ -326,8 +328,8 @@
                                                 @endfor
                                             </select>
                                        </div>  
-
                                     </div>
+
                                     <div class="form-check">
                                         <input class="form-check-input otro-checkbox" type="checkbox" data-target="comunicaciones_otro">
                                         <label class="form-check-label">Otro</label>
@@ -377,7 +379,6 @@
                                         <label class="form-check-label">Otro</label>
                                     </div>
                                 </div>
-
                                 <div class="col-md-6">
                                     <input type="text" class="form-control mt-2 d-none" id="administracion_otro" name="administracion_otro" placeholder="Especifique qué recurso requiere">
                                 </div>
@@ -404,10 +405,8 @@
 
 
                     @push('scripts')
-                    <script>
-                 
-                 
-                 document.addEventListener('DOMContentLoaded', function () {
+     <script>   
+      document.addEventListener('DOMContentLoaded', function () {
     console.log("El DOM está completamente cargado.");
 
     // Contenedor principal para delegar eventos
@@ -449,24 +448,7 @@
     });
 });
                  
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
-                 
+        
                  $(document).ready(function () {
                         let espacioSelect = $('#espacio');
                         let otroEspacioInput = $('#otro_espacio');

@@ -6,6 +6,10 @@ use App\Models\Reserva;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Espacio;
+use App\Models\RequerimientoReserva;
+use Illuminate\Support\Facades\DB;
+
+
 
 class ReservaController extends Controller
 {
@@ -78,46 +82,54 @@ class ReservaController extends Controller
      * Guarda una nueva reserva en la base de datos.
      */
     
-
-    public function store(Request $request)
-    {
-        $request->validate([
-            'espacio_id' => 'required_without:otro_espacio|string',
-            'otro_espacio' => 'nullable|required_if:espacio,Otro|string',
-            'fecha' => 'required|date',
-            'hora_inicio' => 'required|date_format:H:i',
-            'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
-            'nombre_actividad' => 'required|string|max:255',
-            'num_personas' => 'nullable|integer|min:1',
-            'programa_evento' => 'nullable|string',
-        ]);
-    
-        $reserva = new Reserva();
-        $reserva->usuario_id = Auth::check() ? Auth::id() : null;
-        $reserva->espacio = $request->espacio !== 'Otro' ? $request->espacio : null;
-        $reserva->otro_espacio = $request->espacio === 'Otro' ? $request->otro_espacio : null;
-        $reserva->fecha = $request->fecha;
-        $reserva->hora_inicio = $request->hora_inicio;
-        $reserva->hora_fin = $request->hora_fin;
-        $reserva->nombre_actividad = $request->nombre_actividad;
-        $reserva->num_personas = $request->num_personas;
-        $reserva->programa_evento = $request->programa_evento;
-
-
-        if ($reserva->save()) {
-            // Redirigir a la página del calendario
-            return redirect()->route('reservas.calendario')->with('success', 'Reserva creada correctamente.');
+     public function store(Request $request)
+     {
+         // Validación de los datos del formulario
+         $request->validate([
+             'espacio_id' => 'required_without:otro_espacio|string',
+             'otro_espacio' => 'nullable|required_if:espacio,Otro|string',
+             'fecha' => 'required|date',
+             'hora_inicio' => 'required|date_format:H:i',
+             'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
+             'nombre_actividad' => 'required|string|max:255',
+             'num_personas' => 'nullable|integer|min:1',
+             'programa_evento' => 'nullable|string',
+             'requerimientos' => 'nullable|array', // Validación para los requerimientos adicionales
+         ]);
+     
+         // Crear una nueva instancia de Reserva y asignar los valores
+         $reserva = new Reserva();
+         $reserva->usuario_id = Auth::check() ? Auth::id() : null;
+         $reserva->espacio = $request->espacio !== 'Otro' ? $request->espacio : null;
+         $reserva->otro_espacio = $request->espacio === 'Otro' ? $request->otro_espacio : null;
+         $reserva->fecha = $request->fecha;
+         $reserva->hora_inicio = $request->hora_inicio;
+         $reserva->hora_fin = $request->hora_fin;
+         $reserva->nombre_actividad = $request->nombre_actividad;
+         $reserva->num_personas = $request->num_personas;
+         $reserva->programa_evento = $request->programa_evento;
+     
+         // Guardar la reserva en la base de datos
+         if ($request->has('requerimientos')) {
+            foreach ($request->requerimientos as $requerimiento) {
+                DB::table('requerimientos_reserva')->insert([
+                    'reserva_id' => $reserva->id,
+                    'requerimiento' => $requerimiento,
+                ]);
+            }
         } else {
-            return back()->withErrors(['error' => 'Error al crear la reserva.'])->withInput();
-        }
-    }
+             // Si hay un error, redirigir de vuelta con un mensaje de error
+             return back()->withErrors(['error' => 'Error al crear la reserva.'])->withInput();
+         }
+     }
+     
     
     /**
      * Muestra el formulario de edición de una reserva.
      */
     public function edit(Reserva $reserva)
     {
-        if ($reserva->user_id !== Auth::id()) {
+        if ($reserva->usuario_id !== Auth::id()) {
             abort(403, 'No tienes permisos para editar esta reserva.');
         }
 
@@ -130,7 +142,7 @@ class ReservaController extends Controller
      */
     public function update(Request $request, Reserva $reserva)
     {
-        if ($reserva->user_id !== Auth::id()) {
+        if ($reserva->usuario_id !== Auth::id()) {
             abort(403, 'No tienes permisos para actualizar esta reserva.');
         }
 
@@ -152,7 +164,7 @@ class ReservaController extends Controller
      */
     public function destroy(Reserva $reserva)
     {
-        if ($reserva->user_id !== Auth::id()) {
+        if ($reserva->usuario_id !== Auth::id()) {
             abort(403, 'No tienes permisos para eliminar esta reserva.');
         }
 

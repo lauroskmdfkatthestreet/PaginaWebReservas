@@ -31,6 +31,7 @@ class LoginController extends Controller
             return back()->withErrors(['email' => 'No se encontró un usuario con este email.'])->withInput();
         }
 
+      
 
         // Intenta autenticar al usuario con Auth::attempt().
         // Este método devolverá true si las credenciales son válidas.
