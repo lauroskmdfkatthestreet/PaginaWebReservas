@@ -86,44 +86,62 @@ class ReservaController extends Controller
      {
          // Validación de los datos del formulario
          $request->validate([
-             'espacio_id' => 'required_without:otro_espacio|string',
-             'otro_espacio' => 'nullable|required_if:espacio,Otro|string',
+             'otro_espacio' => 'required|string|max:255', 
              'fecha' => 'required|date',
              'hora_inicio' => 'required|date_format:H:i',
              'hora_fin' => 'required|date_format:H:i|after:hora_inicio',
              'nombre_actividad' => 'required|string|max:255',
              'num_personas' => 'nullable|integer|min:1',
              'programa_evento' => 'nullable|string',
-             'requerimientos' => 'nullable|array', // Validación para los requerimientos adicionales
+             'requerimientos' => 'nullable|array',
+             'requerimientos.*.descripcion' => 'required|string|max:255',
+             'requerimientos.*.cantidad' => 'required|integer|min:1',
+             'requerimientos.*.tipo' => 'required|in:audiovisuales,servicios_generales,comunicaciones,administracion',
          ]);
      
-         // Crear una nueva instancia de Reserva y asignar los valores
-         $reserva = new Reserva();
-         $reserva->usuario_id = Auth::check() ? Auth::id() : null;
-         $reserva->espacio = $request->espacio !== 'Otro' ? $request->espacio : null;
-         $reserva->otro_espacio = $request->espacio === 'Otro' ? $request->otro_espacio : null;
-         $reserva->fecha = $request->fecha;
-         $reserva->hora_inicio = $request->hora_inicio;
-         $reserva->hora_fin = $request->hora_fin;
-         $reserva->nombre_actividad = $request->nombre_actividad;
-         $reserva->num_personas = $request->num_personas;
-         $reserva->programa_evento = $request->programa_evento;
+         DB::beginTransaction(); // Inicia transacción
      
-         // Guardar la reserva en la base de datos
-         if ($request->has('requerimientos')) {
-            foreach ($request->requerimientos as $requerimiento) {
-                DB::table('requerimientos_reserva')->insert([
-                    'reserva_id' => $reserva->id,
-                    'requerimiento' => $requerimiento,
-                ]);
-            }
-        } else {
-             // Si hay un error, redirigir de vuelta con un mensaje de error
+         try {
+             // Crea la reserva
+             $reserva = Reserva::create([
+                 'usuario_id' => Auth::id(),
+                 'espacio' => $request->otro_espacio, 
+                 'fecha' => $request->fecha,
+                 'hora_inicio' => $request->hora_inicio,
+                 'hora_fin' => $request->hora_fin,
+                 'nombre_actividad' => $request->nombre_actividad,
+                 'num_personas' => $request->num_personas,
+                 'programa_evento' => $request->programa_evento,
+             ]);
+     
+             DB::commit(); // Confirma la transacción
+     
+             // Si la solicitud es AJAX, devolvemos JSON en lugar de redirigir
+             if ($request->ajax()) {
+                 return response()->json([
+                     'success' => true,
+                     'message' => 'Reserva creada con éxito',
+                     'data' => $reserva
+                 ], 201);
+             }
+     
+             return redirect()->route('reservas.calendario')->with('success', 'Reserva creada con éxito.');
+         } catch (\Exception $e) {
+             DB::rollBack(); // Revierte la transacción en caso de error
+     
+             // Responde con error en caso de AJAX
+             if ($request->ajax()) {
+                 return response()->json([
+                     'success' => false,
+                     'message' => 'Error al crear la reserva.',
+                     'error' => $e->getMessage()
+                 ], 500);
+             }
+     
              return back()->withErrors(['error' => 'Error al crear la reserva.'])->withInput();
          }
      }
-     
-    
+          
     /**
      * Muestra el formulario de edición de una reserva.
      */
@@ -156,7 +174,7 @@ class ReservaController extends Controller
 
         $reserva->update($request->all());
 
-        return redirect()->route('reservas.index')->with('success', 'Reserva actualizada correctamente.');
+        return redirect()->route('reservas.calendario')->with('success', 'Reserva actualizada correctamente.');
     }
 
     /**
@@ -170,7 +188,7 @@ class ReservaController extends Controller
 
         $reserva->delete();
 
-        return redirect()->route('reservas.index')->with('success', 'Reserva eliminada correctamente.');
+        return redirect()->route('reservas.calendario')->with('success', 'Reserva eliminada correctamente.');
     }
 
     /**

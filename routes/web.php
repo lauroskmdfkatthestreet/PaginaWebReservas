@@ -9,11 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 
 
-
-
-
 // Página principal
 Route::get('/', [IndexController::class, 'index'])->name('index');
+
+
+
+
 
 // Rutas de reservas
 Route::middleware(['auth'])->prefix('reservas')->group(function () {

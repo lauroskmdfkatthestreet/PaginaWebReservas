@@ -16,6 +16,8 @@
             </div>
             <div class="modal-body">
                 <form id="formReserva" action="{{ route('reservas.store') }}" method="POST">
+                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+
                     @csrf
 
                     <!-- SECCIÓN 1: Nueva Reserva -->
@@ -55,7 +57,7 @@
                         <!-- Fecha y Horas -->
                         <div class="mb-3">
                             <label for="fecha" class="form-label">Fecha</label>
-                            <input type="date" class="form-control" id="fecha" name="fecha" required readonly>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
                         </div>
                         <div class="mb-3">
                             <label for="hora_inicio" class="form-label">Hora de Inicio</label>
@@ -81,121 +83,144 @@
                         </div>
                     </div>
 
-                 <!-- SECCIÓN 2: Requerimientos -->
-<div id="form-requerimientos" class="d-none">
-    <h5 class="mt-4">Requerimientos</h5>
+                        <!-- SECCIÓN 2: Requerimientos -->
+                <div id="form-requerimientos" class="d-none">
+                    <h5 class="mt-4">Requerimientos</h5>
 
-    <!-- Número de Personas -->
-    <div class="mb-3">
-        <label for="num_personas" class="form-label">Número de Personas</label>
-        <select class="form-control" name="num_personas" required>
-            @for ($i = 1; $i <= 500; $i++)
-                <option value="{{ $i }}">{{ $i }}</option>
-            @endfor
-        </select>
-    </div>
-
-    <!-- 🔹 Audiovisuales -->
-    <h6 class="mt-3">Audiovisuales</h6>
-    <div class="row">
-        @php
-            $audiovisuales = ['Computador', 'Cámara', 'Conexión a Internet', 'Pantalla para Proyección', 
-                              'Pantalla (TV)', 'Video Bin', 'Sonido', 'Micrófono', 'Otro'];
-        @endphp
-        @foreach ($audiovisuales as $item)
-            <div class="form-check">
-                <input class="form-check-input requerimiento-checkbox" type="checkbox" 
-                    name="audiovisuales[]" value="{{ $item }}" 
-                    data-target="{{ \Str::slug($item) }}-select">
-                <label class="form-check-label">{{ $item }}</label>
-                @if (!in_array($item, ['Conexión a Internet', 'Sonido'])) 
-                    <div id="{{ \Str::slug($item) }}-select" class="d-none ms-2 d-inline-block">
-                        <select class="form-control" name="cantidad[{{ $item }}]">
-                            @for ($i = 1; $i <= 15; $i++)
+                    <!-- Número de Personas -->
+                    <div class="mb-3">
+                        <label for="num_personas" class="form-label">Número de Personas</label>
+                        <select class="form-control" name="num_personas" required>
+                            @for ($i = 1; $i <= 500; $i++)
                                 <option value="{{ $i }}">{{ $i }}</option>
                             @endfor
                         </select>
                     </div>
-                @endif
-            </div>
-        @endforeach
-    </div>
 
-    <!-- 🔹 Servicios Generales -->
-    <h6 class="mt-3">Servicios Generales</h6>
-    <div class="row">
-        @php
-            $servicios = ['Mesa', 'Mantel', 'Extensión Eléctrica', 'Multitoma Eléctrica', 'Otro'];
-        @endphp
-        @foreach ($servicios as $item)
-            <div class="form-check">
-                <input class="form-check-input requerimiento-checkbox" type="checkbox" 
-                    name="servicios_generales[]" value="{{ $item }}" 
-                    data-target="{{ \Str::slug($item) }}-select">
-                <label class="form-check-label">{{ $item }}</label>
-                <div id="{{ \Str::slug($item) }}-select" class="d-none ms-2 d-inline-block">
-                    <select class="form-control" name="cantidad[{{ $item }}]">
-                        @for ($i = 1; $i <= 15; $i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
-                    </select>
+                    <!-- 🔹 Audiovisuales -->
+                    <h6 class="mt-3">Audiovisuales</h6>
+                    <div class="row">
+                        @php
+                            $audiovisuales = ['Computador', 'Cámara', 'Conexión a Internet', 'Pantalla para Proyección', 
+                                            'Pantalla (TV)', 'Video Bin', 'Sonido', 'Micrófono', 'Otro'];
+                        @endphp
+                        @foreach ($audiovisuales as $item)
+                            <div class="form-check">
+                                <input class="form-check-input requerimiento-checkbox" type="checkbox" 
+                                    name="audiovisuales[]" value="{{ $item }}" 
+                                    data-target="otro_audiovisual_{{ \Str::slug($item) }}">
+                                <label class="form-check-label">{{ $item }}</label>
+
+                                <div id="otro_audiovisual_{{ \Str::slug($item) }}" class="d-none ms-2 d-inline-block">
+                                    @if ($item === 'Otro')
+                                        <input type="text" class="form-control otro-text" name="otro_audiovisual" 
+                                            placeholder="Especifique el requisito">
+                                    @else
+                                        <select class="form-control" name="cantidad[{{ $item }}]">
+                                            @for ($i = 1; $i <= 15; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- 🔹 Servicios Generales -->
+                    <h6 class="mt-3">Servicios Generales</h6>
+                    <div class="row">
+                        @php
+                            $servicios = ['Mesa', 'Mantel', 'Extensión Eléctrica', 'Multitoma Eléctrica', 'Otro'];
+                        @endphp
+                        @foreach ($servicios as $item)
+                            <div class="form-check">
+                                <input class="form-check-input requerimiento-checkbox" type="checkbox" 
+                                    name="servicios_generales[]" value="{{ $item }}" 
+                                    data-target="otro_servicio_{{ \Str::slug($item) }}">
+                                <label class="form-check-label">{{ $item }}</label>
+
+                                <div id="otro_servicio_{{ \Str::slug($item) }}" class="d-none ms-2 d-inline-block">
+                                    @if ($item === 'Otro')
+                                        <input type="text" class="form-control otro-text" name="otro_servicio" 
+                                            placeholder="Especifique el requisito">
+                                    @else
+                                        <select class="form-control" name="cantidad[{{ $item }}]">
+                                            @for ($i = 1; $i <= 15; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- 🔹 Comunicaciones -->
+                    <h6 class="mt-3">Comunicaciones</h6>
+                    <div class="row">
+                        @php
+                            $comunicaciones = ['Fotografía', 'Video', 'Otro'];
+                        @endphp
+                        @foreach ($comunicaciones as $item)
+                            <div class="form-check">
+                                <input class="form-check-input requerimiento-checkbox" type="checkbox" 
+                                    name="comunicaciones[]" value="{{ $item }}" 
+                                    data-target="otro_comunicacion_{{ \Str::slug($item) }}">
+                                <label class="form-check-label">{{ $item }}</label>
+
+                                <div id="otro_comunicacion_{{ \Str::slug($item) }}" class="d-none ms-2 d-inline-block">
+                                    @if ($item === 'Otro')
+                                        <input type="text" class="form-control otro-text" name="otro_comunicacion" 
+                                            placeholder="Especifique el requisito">
+                                    @else
+                                        <select class="form-control" name="cantidad[{{ $item }}]">
+                                            @for ($i = 1; $i <= 15; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- 🔹 Administración -->
+                    <h6 class="mt-3">Administración</h6>
+                    <div class="row">
+                        @php
+                            $administracion = ['Refrigerio', 'Agua', 'Vasos', 'Otro'];
+                        @endphp
+                        @foreach ($administracion as $item)
+                            <div class="form-check">
+                                <input class="form-check-input requerimiento-checkbox" type="checkbox" 
+                                    name="administracion[]" value="{{ $item }}" 
+                                    data-target="otro_administracion_{{ \Str::slug($item) }}">
+                                <label class="form-check-label">{{ $item }}</label>
+
+                                <div id="otro_administracion_{{ \Str::slug($item) }}" class="d-none ms-2 d-inline-block">
+                                    @if ($item === 'Otro')
+                                        <input type="text" class="form-control otro-text" name="otro_administracion" 
+                                            placeholder="Especifique el requisito">
+                                    @else
+                                        <select class="form-control" name="cantidad[{{ $item }}]">
+                                            @for ($i = 1; $i <= 15; $i++)
+                                                <option value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    @endif
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+
+                    <!-- Botones de Navegación -->
+                    <div class="text-end mt-4">
+                        <button type="button" class="btn btn-secondary" id="btn-anterior">Anterior</button>
+                        <button type="submit" class="btn btn-success">Reservar</button>
+                    </div>
                 </div>
-            </div>
-        @endforeach
-    </div>
 
-    <!-- 🔹 Comunicaciones -->
-    <h6 class="mt-3">Comunicaciones</h6>
-    <div class="row">
-        @php
-            $comunicaciones = ['Fotografía', 'Video', 'Otro'];
-        @endphp
-        @foreach ($comunicaciones as $item)
-            <div class="form-check">
-                <input class="form-check-input requerimiento-checkbox" type="checkbox" 
-                    name="comunicaciones[]" value="{{ $item }}" 
-                    data-target="{{ \Str::slug($item) }}-select">
-                <label class="form-check-label">{{ $item }}</label>
-                <div id="{{ \Str::slug($item) }}-select" class="d-none ms-2 d-inline-block">
-                    <select class="form-control" name="cantidad[{{ $item }}]">
-                        @for ($i = 1; $i <= 15; $i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
-                    </select>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
-    <!-- 🔹 Administración -->
-    <h6 class="mt-3">Administración</h6>
-    <div class="row">
-        @php
-            $administracion = ['Refrigerio', 'Agua', 'Vasos', 'Otro'];
-        @endphp
-        @foreach ($administracion as $item)
-            <div class="form-check">
-                <input class="form-check-input requerimiento-checkbox" type="checkbox" 
-                    name="administracion[]" value="{{ $item }}" 
-                    data-target="{{ \Str::slug($item) }}-select">
-                <label class="form-check-label">{{ $item }}</label>
-                <div id="{{ \Str::slug($item) }}-select" class="d-none ms-2 d-inline-block">
-                    <select class="form-control" name="cantidad[{{ $item }}]">
-                        @for ($i = 1; $i <= 15; $i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
-                    </select>
-                </div>
-            </div>
-        @endforeach
-    </div>
-
-    <!-- Botones de Navegación -->
-    <div class="text-end mt-4">
-        <button type="button" class="btn btn-secondary" id="btn-anterior">Anterior</button>
-        <button type="submit" class="btn btn-success">Reservar</button>
-    </div>
-</div>
 
                 </form>
             </div>
@@ -220,7 +245,8 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('fecha').value = info.dateStr;
             new bootstrap.Modal(document.getElementById('modalReserva')).show();
         },
-        events: '/getEvents'
+        events: '/reservas/events', // Ajustamos la URL al valor correcto
+
     });
     calendar.render();
 
@@ -251,6 +277,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const target = $(this).data('target');
             $(`#${target}`).toggleClass('d-none', !this.checked);
         });
+
+        // ✅ Lógica para cada "Otro" de cada categoría
+        $('.otro-text').each(function() {
+            const inputOtro = $(this); // El campo de texto asociado
+            const checkboxOtro = inputOtro.closest('.form-check').find('.requerimiento-checkbox'); // Checkbox "Otro"
+
+            // Evento para mostrar/ocultar campo de texto
+            checkboxOtro.on('change', function() {
+                if ($(this).is(':checked')) {
+                    inputOtro.removeClass('d-none').prop('disabled', false).attr('required', true);
+                } else {
+                    inputOtro.addClass('d-none').prop('disabled', true).removeAttr('required').val('');
+                }
+            });
+        });
     });
 
     // Envío del Formulario con AJAX
@@ -271,5 +312,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
 </script>
 @endsection
