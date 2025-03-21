@@ -50,6 +50,12 @@ Route::middleware(['auth', 'role:profesor'])->group(function () {
     })->name('profesor.dashboard');
 });
 
+//manejo y eliminacion de reservas
+Route::put('/{id}', [ReservaController::class, 'update'])->name('reservas.update'); // Editar reserva
+Route::delete('/{id}', [ReservaController::class, 'destroy'])->name('reservas.destroy'); // Eliminar reserva
+
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\IndexController::class, 'index'])->name('home');

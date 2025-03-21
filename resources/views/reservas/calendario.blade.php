@@ -217,8 +217,10 @@
                     <!-- Botones de Navegación -->
                     <div class="text-end mt-4">
                         <button type="button" class="btn btn-secondary" id="btn-anterior">Anterior</button>
-                        <button type="submit" class="btn btn-success">Reservar</button>
+                        <button type="submit" class="btn btn-success">Reservar</button>                    
                     </div>
+                    <button id="btn-editar" class="btn btn-primary d-none">Guardar Cambios</button>
+                    <button id="btn-eliminar" class="btn btn-danger d-none">Eliminar Reserva</button>
                 </div>
 
 
@@ -246,7 +248,24 @@ document.addEventListener('DOMContentLoaded', function() {
             new bootstrap.Modal(document.getElementById('modalReserva')).show();
         },
         events: '/reservas/events', // Ajustamos la URL al valor correcto
+        eventClick: function(info) {
+            const event = info.event;
+            document.getElementById('modalReserva').setAttribute('data-reserva-id', event.id);
 
+            // Llenar el formulario con los datos de la reserva
+            document.getElementById('fecha').value = event.startStr;
+            document.getElementById('hora_inicio').value = event.extendedProps.hora_inicio;
+            document.getElementById('hora_fin').value = event.extendedProps.hora_fin;
+            document.getElementById('nombre_actividad').value = event.title;
+            document.getElementById('programa_evento').value = event.extendedProps.programa_evento;
+
+            // Cambiar botón de "Reservar" por "Guardar Cambios" y "Eliminar"
+            document.getElementById('btn-reservar').classList.add('d-none');
+            document.getElementById('btn-editar').classList.remove('d-none');
+            document.getElementById('btn-eliminar').classList.remove('d-none');
+
+            new bootstrap.Modal(document.getElementById('modalReserva')).show();
+        }
     });
     calendar.render();
 
@@ -278,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function() {
             $(`#${target}`).toggleClass('d-none', !this.checked);
         });
 
-        // ✅ Lógica para cada "Otro" de cada categoría
+        // Lógica para cada "Otro" de cada categoría
         $('.otro-text').each(function() {
             const inputOtro = $(this); // El campo de texto asociado
             const checkboxOtro = inputOtro.closest('.form-check').find('.requerimiento-checkbox'); // Checkbox "Otro"
@@ -311,7 +330,47 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-});
 
+    // Evento para editar la reserva
+    document.getElementById('btn-editar').addEventListener('click', function() {
+        const reservaId = document.getElementById('modalReserva').getAttribute('data-reserva-id');
+        const formData = new FormData(document.getElementById('formReserva'));
+
+        fetch(`/reservas/${reservaId}`, {
+            method: 'PUT',
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' },
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            calendar.refetchEvents();
+            bootstrap.Modal.getInstance(document.getElementById('modalReserva')).hide();
+            alert(data.message); // Confirmación
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+    // Evento para eliminar la reserva
+    document.getElementById('btn-eliminar').addEventListener('click', function() {
+        if (!confirm('¿Estás seguro de que deseas eliminar esta reserva?')) return;
+
+        const reservaId = document.getElementById('modalReserva').getAttribute('data-reserva-id');
+
+        fetch(`/reservas/${reservaId}`, {
+            method: 'DELETE',
+            headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}' }
+        })
+        .then(response => response.json())
+        .then(data => {
+            calendar.refetchEvents();
+            bootstrap.Modal.getInstance(document.getElementById('modalReserva')).hide();
+            alert(data.message); // Confirmación
+        })
+        .catch(error => console.error('Error:', error));
+    });
+
+});
 </script>
+
+
 @endsection

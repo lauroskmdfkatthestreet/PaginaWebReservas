@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Espacio;
 use App\Models\RequerimientoReserva;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+
+
+
 
 
 
@@ -84,6 +88,9 @@ class ReservaController extends Controller
     
      public function store(Request $request)
      {
+        dd($request->all());
+
+
          // Validación de los datos del formulario
          $request->validate([
              'otro_espacio' => 'required|string|max:255', 
@@ -94,9 +101,10 @@ class ReservaController extends Controller
              'num_personas' => 'nullable|integer|min:1',
              'programa_evento' => 'nullable|string',
              'requerimientos' => 'nullable|array',
-             'requerimientos.*.descripcion' => 'required|string|max:255',
-             'requerimientos.*.cantidad' => 'required|integer|min:1',
-             'requerimientos.*.tipo' => 'required|in:audiovisuales,servicios_generales,comunicaciones,administracion',
+             'requerimientos.*.descripcion' => 'nullable|string|max:255',
+             'requerimientos.*.cantidad' => 'nullable|integer|min:1',
+             'requerimientos.*.tipo' => 'nullable|in:audiovisuales,servicios_generales,comunicaciones,administracion',
+
          ]);
      
          DB::beginTransaction(); // Inicia transacción
@@ -105,7 +113,7 @@ class ReservaController extends Controller
              // Crea la reserva
              $reserva = Reserva::create([
                  'usuario_id' => Auth::id(),
-                 'espacio' => $request->otro_espacio, 
+                 'otro_espacio' => $request->otro_espacio, 
                  'fecha' => $request->fecha,
                  'hora_inicio' => $request->hora_inicio,
                  'hora_fin' => $request->hora_fin,
@@ -127,19 +135,20 @@ class ReservaController extends Controller
      
              return redirect()->route('reservas.calendario')->with('success', 'Reserva creada con éxito.');
          } catch (\Exception $e) {
-             DB::rollBack(); // Revierte la transacción en caso de error
-     
-             // Responde con error en caso de AJAX
-             if ($request->ajax()) {
-                 return response()->json([
-                     'success' => false,
-                     'message' => 'Error al crear la reserva.',
-                     'error' => $e->getMessage()
-                 ], 500);
-             }
-     
-             return back()->withErrors(['error' => 'Error al crear la reserva.'])->withInput();
-         }
+            DB::rollBack();
+            
+        
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error al crear la reserva.',
+                    'error' => $e->getMessage()
+                ], 500);
+            }
+        
+            return back()->withErrors(['error' => 'Error al crear la reserva.'])->withInput();
+        }
+        
      }
           
     /**
@@ -236,6 +245,7 @@ class ReservaController extends Controller
 
         return response()->json($events);
     }
+
 
 
     public function index()
