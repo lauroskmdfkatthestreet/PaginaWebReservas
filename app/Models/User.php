@@ -6,12 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
-
+use Illuminate\Support\Facades\Hash;
+use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Str; 
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     // ===============================
     // 🔹 PROPIEDADES DEL MODELO
@@ -21,7 +22,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'rol',
+        'cargo', 
+        'role_id', 
+        
     ];
 
     protected $hidden = [
@@ -33,52 +36,48 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+  
+    public function role()
+    {
+        // Asumimos que la clave foránea en la tabla 'users' es 'role_id'
+        return $this->belongsTo(Role::class);
+    }
+
+  
+
+    /**
+     * Verifica si el usuario tiene un rol específico.
+     */
+    public function hasRole($roleNames)
+    {
+    
+    }
+
+
     // ===============================
-    // 🔹 MÉTODOS DE MUTACIÓN
+    // 🔹 MÉTODOS DE MUTACIÓN (Ajustado)
     // ===============================
 
     public function setPasswordAttribute($value)
     {
-
-        if (!Str::startsWith($value, '$2y$')) { 
-            $this->attributes['password'] = bcrypt($value);
+        // Esta lógica de mutación para la contraseña parece manejar si ya está hasheada.
+        // Para la cédula como contraseña (temporalmente para pruebas), podrías no hashearla aquí,
+        // pero para seguridad a largo plazo, ¡es fundamental hashear todas las contraseñas!
+        if (!Str::startsWith($value, '$2y$') && Hash::needsRehash($value)) { // Usar \Hash::needsRehash para verificar si necesita hashearse
+            $this->attributes['password'] = Hash::make($value); // Usar \Hash::make para hashear
         } else {
-            $this->attributes['password'] = $value;
-        }
-
-        
-    }
-
-    public function setRolAttribute($value)
-    {
-        // Si no hay usuarios en la base de datos, el primer usuario será administrador
-        if (User::count() === 0) {
-            $this->attributes['rol'] = 'administrador';
-            return;
-        }
-
-        // Si el usuario autenticado no es administrador, no puede asignar roles
-        if (Auth::check() && Auth::user()->rol === 'administrador') {
-           $this -> attributes['rol'] = $value;
-        } else{
-            
-            $this->attributes['rol'] = 'profesor';
+            $this->attributes['password'] = $value; // Si ya está hasheada o no necesita, guardar como está
         }
     }
+
 
     // ===============================
-    // 🔹 EVENTOS DEL MODELO (BOOT)
+    // 🔹 EVENTOS DEL MODELO (BOOT - Eliminado o Modificado)
     // ===============================
 
-    public static function boot()
-    {
-        parent::boot();
+    // Eliminamos el método boot y la lógica de asignación de roles antigua
+    // ya que ahora los roles se asignan directamente a través de 'role_id'.
+    // Si tienes lógica de eventos del modelo que NO esté relacionada con la asignación de roles antigua,
+    // puedes mantener el método boot, pero eliminando la parte de 'static::creating' que verifica el rol 'administrador'.
 
-        static::creating(function ($user) {
-            // Evitar que haya más de un administrador si ya existe uno
-            if ($user->rol === 'administrador' && User::where('rol', 'administrador')->exists()) {
-                throw new \Exception("Ya existe un administrador registrado.");
-            }
-        });
-    }
 }
