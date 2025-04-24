@@ -23,8 +23,6 @@ class User extends Authenticatable
         'email',
         'password',
         'cargo', 
-        'role_id', 
-        
     ];
 
     protected $hidden = [
@@ -36,22 +34,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-  
-    public function role()
-    {
-        // Asumimos que la clave foránea en la tabla 'users' es 'role_id'
-        return $this->belongsTo(Role::class);
-    }
-
-  
-
-    /**
-     * Verifica si el usuario tiene un rol específico.
-     */
-    public function hasRole($roleNames)
-    {
-    
-    }
 
 
     // ===============================

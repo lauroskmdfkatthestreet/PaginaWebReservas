@@ -176,9 +176,17 @@ class ReservaController extends Controller
 
     public function show(Reserva $reserva)
     {
-        if ($reserva->usuario_id !== Auth::id()) {
-            abort(403, 'No tienes permisos para ver esta reserva.');
+        
+
+
+        if ($user->can('manage-all-reservations') || $user->id === $reserva->usuario_id) {
+            // Si la condición es verdadera...
+            return response()->json($reserva->load(['usuario', 'espacio', 'requerimientos']));
         }
+
+     
+        // Si la condición es falsa...
+        abort(403, 'No tienes permisos para ver esta reserva.');
     
         return response()->json($reserva->load(['usuario', 'espacio', 'requerimientos']));
     }

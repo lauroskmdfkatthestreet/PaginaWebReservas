@@ -45,10 +45,8 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                Bienvenido, {{ Auth::user()->name }} ({{ ucfirst(Auth::user()->rol) }})
-                            </a>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"> Bienvenido, {{ Auth::user()->name }} {{-- Eliminamos la parte del rol y los paréntesis --}} </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#" 
