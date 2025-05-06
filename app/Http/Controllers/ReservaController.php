@@ -22,7 +22,7 @@ class ReservaController extends Controller
      
 
         /**
-         * Restringe el acceso a usuarios autenticados.
+         * Restringe el acceso a usuarios autenticados
          */
      //   $this->middleware('auth'); // Esto aplica el middleware 'auth' a las rutas que usan este controlador
     }
@@ -184,7 +184,7 @@ class ReservaController extends Controller
         $user = Auth::user();
         if ($user && ($user->can('manage-all-reservations') || $user->id === $reserva->usuario_id)) {
             // Si el usuario está autenticado Y tiene permiso (es Admin/Superadmin O es el dueño de la reserva)
-            // Continuar con la lógica para cargar las relaciones y devolver los datos de la reserva
+            // Continuar con la lógica para cargar las relaciones y devolver los datos de la reservas
             return response()->json($reserva->load(['usuario', 'espacio', 'requerimientos']));
         }
 
